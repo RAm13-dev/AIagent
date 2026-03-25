@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
-
+from prompts import system_prompt
 
 parser = argparse.ArgumentParser(description="Chatbot")
 
@@ -24,7 +24,13 @@ client = genai.Client(api_key=api_key)
 
 def main():
     response = client.models.generate_content(
-    model='gemini-2.5-flash', contents= messages)
+    model='gemini-2.5-flash', 
+    contents=messages,
+    config=types.GenerateContentConfig(
+         system_instruction=system_prompt,
+         temperature=0,
+         ),
+    )
     if not response.usage_metadata:
         raise RuntimeError("Failed API request")
     if args.verbose:
