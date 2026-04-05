@@ -1,22 +1,25 @@
 import os
 import subprocess
+
 from google.genai import types
 
 
 def run_python_file(working_directory, file_path, args=None):
     try:
         working_dir_abs = os.path.abspath(working_directory)
-    
+
         absolute_file_path = os.path.normpath(os.path.join(working_dir_abs, file_path))
-    
-        valid_target_dir = os.path.commonpath([working_dir_abs, absolute_file_path]) == working_dir_abs
-    
+
+        valid_target_dir = (
+            os.path.commonpath([working_dir_abs, absolute_file_path]) == working_dir_abs
+        )
+
         if valid_target_dir == False:
             return f'Error: Cannot execute "{file_path}" as it is outside the permitted working directory'
-    
+
         if os.path.isfile(absolute_file_path) == False:
             return f'Error: "{file_path}" does not exist or is not a regular file'
-        if absolute_file_path.endswith('.py') == False:
+        if absolute_file_path.endswith(".py") == False:
             return f'Error: "{file_path}" is not a Python file'
         command = ["python", absolute_file_path]
         if args:
@@ -40,15 +43,17 @@ def run_python_file(working_directory, file_path, args=None):
         return "\n".join(output)
     except Exception as e:
         raise f"Error: executing Python file: {e}"
+
+
 schema_run_python_file = types.FunctionDeclaration(
     name="run_python_file",
     description="Lets you execute a python file",
     parameters=types.Schema(
         type=types.Type.OBJECT,
         properties={
-            "directory": types.Schema(
+            "file_path": types.Schema(
                 type=types.Type.STRING,
-                description="Directory path to list files from, relative to the working directory (default is the working directory itself)",
+                description="File path to list files from, relative to the working directory (default is the working directory itself)",
             ),
         },
     ),
