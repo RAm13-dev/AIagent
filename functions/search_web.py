@@ -1,3 +1,4 @@
+import html
 import re
 import urllib.parse
 import urllib.request
@@ -19,26 +20,30 @@ def search_web(working_directory, query, max_results=5):
         )
 
         with urllib.request.urlopen(request, timeout=20) as response:
-            html = response.read().decode("utf-8", errors="ignore")
+            page_html = response.read().decode("utf-8", errors="ignore")
 
         results = []
         for match in re.finditer(
             r'<a[^>]+class="result__a"[^>]+href="([^"]+)"[^>]*>(.*?)</a>',
-            html,
+            page_html,
             re.IGNORECASE | re.DOTALL,
         ):
             if len(results) >= max_results:
                 break
-            title = re.sub(r"<.*?>", "", match.group(2)).strip()
-            link = match.group(1).strip()
+            title = html.unescape(re.sub(r"<.*?>", "", match.group(2)).strip())
+            link = html.unescape(match.group(1).strip())
+            if link.startswith("//"):
+                link = "https:" + link
+            elif link.startswith("/"):
+                link = "https://html.duckduckgo.com" + link
             snippet_match = re.search(
                 r'<a[^>]+href="%s"[^>]*>.*?</a>\s*<div[^>]+class="result__snippet"[^>]*>(.*?)</div>'
-                % re.escape(link),
-                html,
+                % re.escape(match.group(1).strip()),
+                page_html,
                 re.IGNORECASE | re.DOTALL,
             )
             snippet = (
-                re.sub(r"<.*?>", "", snippet_match.group(1)).strip()
+                html.unescape(re.sub(r"<.*?>", "", snippet_match.group(1)).strip())
                 if snippet_match
                 else ""
             )

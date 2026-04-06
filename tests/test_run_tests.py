@@ -1,3 +1,3 @@
 from functions.run_tests import run_tests
 
-print(run_tests("calculator", "."))
+print(run_tests("projects", "."))

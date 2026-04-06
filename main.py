@@ -13,6 +13,12 @@ parser = argparse.ArgumentParser(description="Chatbot")
 
 parser.add_argument("user_prompt", type=str, help="User prompt")
 parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
+parser.add_argument(
+    "--max-iterations",
+    type=int,
+    default=20,
+    help="Maximum number of tool/response iterations",
+)
 
 args = parser.parse_args()
 
@@ -28,7 +34,7 @@ client = genai.Client(api_key=api_key)
 
 
 def main():
-    for i in range(20):
+    for i in range(args.max_iterations):
         response = client.models.generate_content(
             model="gemini-2.5-flash",
             contents=messages,

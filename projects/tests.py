@@ -1,4 +1,4 @@
-# calculator/tests.py
+# projects/tests.py
 
 import unittest
 from pkg.calculator import Calculator
