@@ -1,14 +1,35 @@
 from google.genai import types
 
+from functions.get_directory_info import get_directory_info, schema_get_directory_info
 from functions.get_file_content import get_file_content, schema_get_file_content
+from functions.get_file_stats import get_file_stats, schema_get_file_stats
 from functions.get_files_info import get_files_info, schema_get_files_info
+from functions.get_url_content import get_url_content, schema_get_url_content
 from functions.run_python_file import run_python_file, schema_run_python_file
+from functions.search_in_files import search_in_files, schema_search_in_files
+from functions.search_web import search_web, schema_search_web
+from functions.search_web import search_web, schema_search_web
+from functions.summarize_code import summarize_code, schema_summarize_code
 from functions.write_file import schema_write_file, write_file
+from functions.get_git_status import get_git_status, schema_get_git_status
+from functions.find_todos import find_todos, schema_find_todos
+from functions.lint_code import lint_code, schema_lint_code
+from functions.run_tests import run_tests, schema_run_tests
 
 available_functions = types.Tool(
     function_declarations=[
         schema_get_files_info,
         schema_get_file_content,
+        schema_get_file_stats,
+        schema_get_directory_info,
+        schema_search_in_files,
+        schema_search_web,
+        schema_get_url_content,
+        schema_summarize_code,
+        schema_find_todos,
+        schema_get_git_status,
+        schema_lint_code,
+        schema_run_tests,
         schema_run_python_file,
         schema_write_file,
     ],
@@ -25,6 +46,16 @@ def call_function(function_call, verbose=False):
     function_map = {
         "get_file_content": get_file_content,
         "get_files_info": get_files_info,
+        "get_file_stats": get_file_stats,
+        "get_directory_info": get_directory_info,
+        "search_in_files": search_in_files,
+        "search_web": search_web,
+        "get_url_content": get_url_content,
+        "summarize_code": summarize_code,
+        "find_todos": find_todos,
+        "get_git_status": get_git_status,
+        "lint_code": lint_code,
+        "run_tests": run_tests,
         "run_python_file": run_python_file,
         "write_file": write_file,
     }

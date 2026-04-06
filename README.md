@@ -102,10 +102,20 @@ The AI agent exposes these functions through Gemini function calling:
 
 - `get_files_info` — list files and directories under the sandbox
 - `get_file_content` — read contents of a file under the sandbox
+- `get_file_stats` — show line, word, character, and byte counts for a file
+- `get_directory_info` — summarize total files, directories, size, and largest files
+- `search_in_files` — search text across files in a directory
+- `search_web` — search the internet for real-world information and return result titles, URLs, and snippets
+- `get_url_content` — fetch text content from a URL on the web
+- `summarize_code` — summarize the structure of a Python source file
+- `find_todos` — find TODO/FIXME markers in code and documentation
+- `get_git_status` — inspect git branch and working tree status
+- `lint_code` — perform syntax-only linting of Python files
+- `run_tests` — run unit tests in the sandboxed directory
 - `run_python_file` — execute a Python file inside the sandbox
 - `write_file` — write or overwrite files inside the sandbox
 
-The sandbox directory is currently fixed to `./calculator` in `call_function.py`.
+The sandbox directory is currently fixed to `./calculator` in `call_function.py`. Internet tools are not restricted by this sandbox and can fetch or search real-world online content when available.
 
 ## Testing
 
@@ -114,6 +124,16 @@ Run the provided test scripts to verify the tool implementations:
 ```bash
 python test_get_file_content.py
 python test_get_files_info.py
+python test_get_file_stats.py
+python test_get_directory_info.py
+python test_search_in_files.py
+python test_search_web.py
+python test_get_url_content.py
+python test_summarize_code.py
+python test_find_todos.py
+python test_get_git_status.py
+python test_lint_code.py
+python test_run_tests.py
 python test_run_python_file.py
 python test_write_file.py
 ```
